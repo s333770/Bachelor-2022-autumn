@@ -10,7 +10,7 @@ function App() {
     <div className="App">
      <h1>Skolestudio</h1>
      <SlideButton></SlideButton>
-     <Animation width={500} height={500}/>
+     <Animation/>
   
     </div>
   )
