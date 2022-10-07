@@ -4,16 +4,21 @@ use wasm_bindgen::prelude::*;
 pub struct Bird{
     x: i32, 
     y: i32, 
+    size: i32,
     velocity: i32
 }
 
 impl Bird{
     fn new()->Bird{
         Bird{
-            x: 300,
-            y: 200,
-            velocity: 1
+            x: 200,
+            y: 300,
+            size: 15,
+            velocity: -1
         }
+    }
+    pub fn update(&mut self){
+        self.y=1;
     }
 }
 
@@ -52,6 +57,9 @@ impl Game{
     }
     pub fn bird_velocity(&self)->i32{
         self.bird.velocity
+    }
+    pub fn bird_size(&self)->i32{
+        self.bird.size
     }
   
 }

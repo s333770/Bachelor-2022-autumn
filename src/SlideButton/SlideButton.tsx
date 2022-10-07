@@ -1,7 +1,5 @@
-import React from 'react'
+import React from "react";
 
 export const SlideButton = () => {
-  return (
-    <input type="checkbox" name="Skolestudio"></input>);
-  
-}
+  return <input type="checkbox" name="Skolestudio"></input>;
+};
