@@ -1,21 +1,34 @@
-import { useRef, useState } from "react";
-import reactLogo from "./assets/react.svg";
+import {  useEffect, useState } from "react";
 import "./App.css";
-import { Animation } from "./drawing/Animation";
 import { SlideButton } from "./SlideButton/SlideButton";
-import Canvas from "./drawing/canvas";
-
+import init, { Game } from "../applic/pkg/applic";
+import Canvas from "./drawing/Canvas";
+ export interface Bird {
+  x: number;
+  y: number;
+  velocity: number;
+  size: number;
+}
 function App() {
-  const drawArt=(context: CanvasRenderingContext2D)=>{
-    context.fillStyle="blue";
-    context.fillRect(0,0,100,120);
-  }
 
+  const [bird, setBird] = useState<Bird>({ x: 0, y: 0, velocity: 0, size: 10 });
+  useEffect(()=>{ init().then((_) => {
+    const GameWorld: any = Game.new();
+    const gameWidth = GameWorld.width();
+    const gameHeight = GameWorld.height();
+    const updateFunction=GameWorld.update();
+    setBird({
+      x: GameWorld.bird_x(),
+      y: GameWorld.bird_y(),
+      velocity: GameWorld.bird_velocity(),
+      size: GameWorld.bird_size(),
+    });
+  });},[])
+ 
   return (
     <div className="App">
       <h1>Skolestudio</h1>
-      <SlideButton></SlideButton>
-      <Canvas width={window.innerWidth} height={innerHeight} draw={drawArt} />
+      <Canvas x={bird.x} y={bird.y} velocity={bird.velocity} size={bird.size}/>
     </div>
   );
 }
