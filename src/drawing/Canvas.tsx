@@ -1,15 +1,19 @@
 import React, { useEffect, useRef } from "react";
-import init from "../../applic/pkg/applic";
-import { Bird } from "../App";
+import init, { Bird, Game } from "../../applic/pkg/applic";
 
 
 
-const Canvas: React.FC<Bird> = ({x, y,velocity,size}:Bird) => {
+const Canvas: React.FC= () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   let requestId:any,
   i = 0;
+
   useEffect(() => {
+    init().then(wasm=>{
+
+    const game=Game.new()
+
     const canvas = canvasRef.current;
     if (!canvas) {
     
@@ -19,19 +23,31 @@ const Canvas: React.FC<Bird> = ({x, y,velocity,size}:Bird) => {
     if (!context) {
       return;
     }
+    let i= canvas.width/2;
+
+    document.addEventListener("keydown",(e)=>{
+      switch(e.code){
+          case "ArrowUp": 
+             game.fly_upwards();
+              break;
+      }})
 
   
     const render = () => {
+      context.beginPath();
+      context.fillStyle="blue";   
+      context.fillRect(0,0, 400,400);
         context.beginPath();
         context.fillStyle="red";
         context.arc(
             canvas.width / 2,
-            canvas.height / 2,
-            size,
-            i,
+            game.bird_y(),
+            game.bird_size(),
+            0,
             2 * Math.PI
         );
-        context.fill();   
+        
+          context.fill();   
          requestId=requestAnimationFrame(render);
          return () => {
             cancelAnimationFrame(requestId);
@@ -40,7 +56,7 @@ const Canvas: React.FC<Bird> = ({x, y,velocity,size}:Bird) => {
     render();
    
 
-
+  })
   }, []);
   return <canvas ref={canvasRef}  width={400} height={400}/>;
 };

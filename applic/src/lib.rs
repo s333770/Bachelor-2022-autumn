@@ -17,9 +17,6 @@ impl Bird {
             velocity: -1,
         }
     }
-    pub fn update(&mut self) {
-        self.y = self.y + 1;
-    }
 }
 
 #[wasm_bindgen]
@@ -55,5 +52,8 @@ impl Game {
     }
     pub fn bird_size(&self) -> i32 {
         self.bird.size
+    }
+    pub fn fly_upwards(&mut self) {
+        self.bird.y = self.bird.y - 1;
     }
 }
