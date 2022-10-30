@@ -49,9 +49,9 @@ const Canvas: React.FC= () => {
         );
         game.gravity();
           context.fill();
-        context.fillRect(0,0,100,100);  
-        console.log(game.get_random_number());
-
+        context.fillRect(game.get_current_counter(),0,game.get_pipe_height(),game.get_pipe_width());  
+        game.update_spawn_rate();
+          console.log(game.get_pipe_height());
          requestId=requestAnimationFrame(render);
          return () => {
             cancelAnimationFrame(requestId);

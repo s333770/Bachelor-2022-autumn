@@ -1,7 +1,7 @@
 use std::time::{Duration, SystemTime};
 use wasm_bindgen::prelude::*;
 
-const WORLD_WIDTH: usize = 400;
+const WORLD_WIDTH: usize = 600;
 const WORLD_HEIGHT: usize = 400;
 
 #[wasm_bindgen(module = "/www/utils/date.js")]
@@ -21,19 +21,19 @@ pub struct Bird {
 pub struct Pipe {
     x: usize,
     width: i32,
-    top: i32,
-    bottom: i32,
-    pipe_spawn_rate: i32,
+    top: usize,
+    bottom: usize,
+    pipe_spawn_rate: usize,
 }
 
 impl Pipe {
     fn new() -> Pipe {
         Pipe {
             x: WORLD_WIDTH,
-            width: 30,
-            top: 30,
-            bottom: 30,
-            pipe_spawn_rate: 0,
+            width: 100,
+            top: now() % WORLD_WIDTH,
+            bottom: now() % WORLD_WIDTH,
+            pipe_spawn_rate: WORLD_WIDTH,
         }
     }
 }
@@ -94,19 +94,26 @@ impl Game {
             self.bird.y = self.height as f32;
         }
     }
-    pub fn get_current_counter(&self) -> i32 {
+    pub fn get_current_counter(&self) -> usize {
         return self.pipe.pipe_spawn_rate;
     }
     pub fn update_spawn_rate(&mut self) {
-        self.pipe.pipe_spawn_rate = self.pipe.pipe_spawn_rate + 1;
-        if self.pipe.pipe_spawn_rate > 100 {
-            self.pipe.pipe_spawn_rate = 0;
+        self.pipe.pipe_spawn_rate = self.pipe.pipe_spawn_rate - 1;
+        if self.pipe.pipe_spawn_rate <= 0 {
+            self.pipe.pipe_spawn_rate = 600;
         }
     }
     pub fn get_random_number(&mut self) -> usize {
         let pipeGenerator = now() % WORLD_WIDTH;
 
         return pipeGenerator;
+    }
+
+    pub fn get_pipe_height(&mut self) -> usize {
+        return self.pipe.top;
+    }
+    pub fn get_pipe_width(&mut self) -> usize {
+        return self.pipe.bottom;
     }
 }
 
