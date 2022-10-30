@@ -19,11 +19,11 @@ const Canvas: React.FC= () => {
     
       return;
     }
+    canvas.width=600;
     const context = canvas.getContext("2d");
     if (!context) {
       return;
     }
-    let i= canvas.width/2;
 
     document.addEventListener("keydown",(e)=>{
       switch(e.code){
@@ -36,9 +36,10 @@ const Canvas: React.FC= () => {
     const render = () => {
       context.beginPath();
       context.fillStyle="blue";   
-      context.fillRect(0,0, 400,400);
+      context.fillRect(0,0, 600,400);
         context.beginPath();
         context.fillStyle="red";
+      
         context.arc(
             canvas.width / 2,
             game.bird_y(),
@@ -46,8 +47,11 @@ const Canvas: React.FC= () => {
             0,
             2 * Math.PI
         );
-        
-          context.fill();   
+        game.gravity();
+          context.fill();
+        context.fillRect(0,0,100,100);  
+        console.log(game.get_random_number());
+
          requestId=requestAnimationFrame(render);
          return () => {
             cancelAnimationFrame(requestId);
