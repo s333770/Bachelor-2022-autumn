@@ -26,13 +26,17 @@ pub struct Pipe {
     pipe_spawn_rate: usize,
 }
 
+fn get_random_number_in_range(range: usize) -> usize {
+    return WORLD_HEIGHT - (now() % WORLD_HEIGHT);
+}
+
 impl Pipe {
     fn new() -> Pipe {
         Pipe {
             x: WORLD_WIDTH,
             width: 100,
-            top: now() % WORLD_WIDTH,
-            bottom: now() % WORLD_WIDTH,
+            top: get_random_number_in_range(WORLD_HEIGHT) / 3,
+            bottom: get_random_number_in_range(WORLD_HEIGHT) / 3,
             pipe_spawn_rate: WORLD_WIDTH,
         }
     }
@@ -55,6 +59,7 @@ pub struct Game {
     width: i32,
     bird: Bird,
     pipe: Pipe,
+    pipe2: Pipe,
 }
 
 #[wasm_bindgen]
@@ -65,8 +70,12 @@ impl Game {
             width: 400,
             bird: Bird::new(),
             pipe: Pipe::new(),
+            pipe2: Pipe::new(),
         }
     }
+    // fn update_pipe(&self) {
+    //     self.pipe = Pipe::new();
+    // }
     pub fn width(&self) -> i32 {
         self.width
     }
@@ -100,7 +109,9 @@ impl Game {
     pub fn update_spawn_rate(&mut self) {
         self.pipe.pipe_spawn_rate = self.pipe.pipe_spawn_rate - 1;
         if self.pipe.pipe_spawn_rate <= 0 {
-            self.pipe.pipe_spawn_rate = 600;
+            self.pipe.pipe_spawn_rate = WORLD_WIDTH;
+            self.pipe = Pipe::new();
+            self.pipe2 = Pipe::new();
         }
     }
     pub fn get_random_number(&mut self) -> usize {
@@ -109,16 +120,29 @@ impl Game {
         return pipeGenerator;
     }
 
-    pub fn get_pipe_height(&mut self) -> usize {
+    pub fn get_pipe_top(&mut self) -> usize {
         return self.pipe.top;
     }
-    pub fn get_pipe_width(&mut self) -> usize {
+    pub fn get_pipe_bottom(&mut self) -> usize {
         return self.pipe.bottom;
     }
-}
+    pub fn get_pipe_width(&mut self) -> i32 {
+        return self.pipe.width;
+    }
+    pub fn get_pipe2_top(&mut self) -> usize {
+        return self.pipe2.top;
+    }
+    pub fn get_pipe2_width(&mut self) -> usize {
+        return self.pipe2.top;
+    }
+    pub fn get_pipe2_bottom(&mut self) -> usize {
+        return self.pipe2.bottom;
+    }
 
-fn get_random_buf() -> Result<[u8; 1], getrandom::Error> {
-    let mut buf = [1];
-    getrandom::getrandom(&mut buf)?;
-    return Ok(buf);
+    pub fn detect_collsion(&mut self) -> bool {
+        if self.bird_y() < self.get_pipe_top() as f32 {
+            return true;
+        }
+        return false;
+    }
 }

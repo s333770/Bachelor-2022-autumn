@@ -1,8 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import init, { Bird, Game } from "../../applic/pkg/applic";
 
-
-
 const Canvas: React.FC= () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -30,6 +28,9 @@ const Canvas: React.FC= () => {
           case "ArrowUp": 
              game.fly_upwards();
               break;
+          case "Space": 
+              game.fly_upwards();
+               break;
       }})
 
   
@@ -48,15 +49,16 @@ const Canvas: React.FC= () => {
             2 * Math.PI
         );
         game.gravity();
-          context.fill();
-        context.fillRect(game.get_current_counter(),0,game.get_pipe_height(),game.get_pipe_width());  
+        context.fill();
+        context.fillRect(game.get_current_counter(),0,game.get_pipe_width(),game.get_pipe_top());  
+        context.fillRect(game.get_current_counter(),canvas.height, game.get_pipe_width(),-game.get_pipe2_bottom())
         game.update_spawn_rate();
-          console.log(game.get_pipe_height());
-         requestId=requestAnimationFrame(render);
-         return () => {
-            cancelAnimationFrame(requestId);
-         };
-   }; 
+        console.log(game.get_pipe2_bottom());
+        requestId=requestAnimationFrame(render);
+        return () => {
+          cancelAnimationFrame(requestId);
+        };
+    }; 
     render();
    
 
