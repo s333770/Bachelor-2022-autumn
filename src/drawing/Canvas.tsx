@@ -53,8 +53,8 @@ const Canvas: React.FC= () => {
         context.fillRect(game.get_current_counter(),0,game.get_pipe_width(),game.get_pipe_top());  
         context.fillRect(game.get_current_counter(),canvas.height, game.get_pipe_width(),-game.get_pipe2_bottom())
         game.update_spawn_rate();
-        console.log(game.get_pipe2_bottom());
         requestId=requestAnimationFrame(render);
+        console.log(game.get_random_number2())
         return () => {
           cancelAnimationFrame(requestId);
         };

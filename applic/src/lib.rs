@@ -8,6 +8,10 @@ const WORLD_HEIGHT: usize = 400;
 extern "C" {
     fn now() -> usize;
 }
+#[wasm_bindgen(module = "/www/utils/random.js")]
+extern "C" {
+    fn random() -> usize;
+}
 
 #[wasm_bindgen]
 pub struct Bird {
@@ -24,6 +28,10 @@ pub struct Pipe {
     top: usize,
     bottom: usize,
     pipe_spawn_rate: usize,
+}
+pub fn get_random_number() -> usize {
+    println!("{}", random());
+    return random();
 }
 
 fn get_random_number_in_range(range: usize) -> usize {
@@ -144,5 +152,11 @@ impl Game {
             return true;
         }
         return false;
+    }
+    pub fn get_current_time(&mut self) -> usize {
+        return now();
+    }
+    pub fn get_random_number2(&mut self) -> usize {
+        return get_random_number();
     }
 }
