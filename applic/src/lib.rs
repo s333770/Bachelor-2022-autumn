@@ -10,7 +10,7 @@ extern "C" {
 }
 #[wasm_bindgen(module = "/www/utils/random.js")]
 extern "C" {
-    fn random() -> usize;
+    fn random() -> f64;
 }
 
 #[wasm_bindgen]
@@ -29,13 +29,23 @@ pub struct Pipe {
     bottom: usize,
     pipe_spawn_rate: usize,
 }
-pub fn get_random_number() -> usize {
-    println!("{}", random());
-    return random();
-}
 
 fn get_random_number_in_range(range: usize) -> usize {
     return WORLD_HEIGHT - (now() % WORLD_HEIGHT);
+}
+fn print_current_time() -> usize {
+    let mut rng = get_random_buf();
+    let value2 = rng.unwrap()[0];
+    let mut modulus: u16 = value2 as u16 * 1000;
+    let return_value = modulus % 600;
+
+    return return_value as usize;
+}
+
+fn get_random_buf() -> Result<[u8; 1], getrandom::Error> {
+    let mut buf = [1];
+    getrandom::getrandom(&mut buf)?;
+    Ok(buf)
 }
 
 impl Pipe {
@@ -43,7 +53,7 @@ impl Pipe {
         Pipe {
             x: WORLD_WIDTH,
             width: 100,
-            top: get_random_number_in_range(WORLD_HEIGHT) / 3,
+            top: print_current_time() / 3,
             bottom: get_random_number_in_range(WORLD_HEIGHT) / 3,
             pipe_spawn_rate: WORLD_WIDTH,
         }
@@ -155,8 +165,5 @@ impl Game {
     }
     pub fn get_current_time(&mut self) -> usize {
         return now();
-    }
-    pub fn get_random_number2(&mut self) -> usize {
-        return get_random_number();
     }
 }
