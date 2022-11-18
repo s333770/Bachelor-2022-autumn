@@ -15,7 +15,7 @@ extern "C" {
 
 #[wasm_bindgen]
 pub struct Bird {
-    x: i32,
+    x: usize,
     y: f32,
     size: i32,
     velocity: i32,
@@ -24,7 +24,7 @@ pub struct Bird {
 #[wasm_bindgen]
 pub struct Pipe {
     x: usize,
-    width: i32,
+    width: usize,
     top: usize,
     bottom: usize,
     pipe_spawn_rate: usize,
@@ -91,16 +91,14 @@ impl Game {
             pipe2: Pipe::new(),
         }
     }
-    // fn update_pipe(&self) {
-    //     self.pipe = Pipe::new();
-    // }
+
     pub fn width(&self) -> i32 {
         self.width
     }
     pub fn height(&self) -> i32 {
         self.height
     }
-    pub fn bird_x(&self) -> i32 {
+    pub fn bird_x(&self) -> usize {
         self.bird.x
     }
     pub fn bird_y(&self) -> f32 {
@@ -144,7 +142,7 @@ impl Game {
     pub fn get_pipe_bottom(&mut self) -> usize {
         return self.pipe.bottom;
     }
-    pub fn get_pipe_width(&mut self) -> i32 {
+    pub fn get_pipe_width(&mut self) -> usize {
         return self.pipe.width;
     }
     pub fn get_pipe2_top(&mut self) -> usize {
@@ -158,9 +156,16 @@ impl Game {
     }
 
     pub fn detect_collsion(&mut self) -> bool {
-        if self.bird_y() < self.get_pipe_top() as f32 {
-            return true;
+        if self.bird_x() as usize > (self.get_current_counter() - self.get_pipe_width()) {
+            if self.bird_y() < self.get_pipe_top() as f32 {
+                return true;
+            }
+            if self.bird_y() > (WORLD_HEIGHT - self.get_pipe2_bottom()) as f32 {
+                return true;
+            }
+            return false;
         }
+
         return false;
     }
     pub fn get_current_time(&mut self) -> usize {
