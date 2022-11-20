@@ -1,4 +1,3 @@
-use std::time::{Duration, SystemTime};
 use wasm_bindgen::prelude::*;
 
 const WORLD_WIDTH: usize = 600;
@@ -23,16 +22,12 @@ pub struct Bird {
 
 #[wasm_bindgen]
 pub struct Pipe {
-    x: usize,
     width: usize,
     top: usize,
     bottom: usize,
     pipe_spawn_rate: usize,
 }
 
-fn get_random_number_in_range(range: usize) -> usize {
-    return WORLD_HEIGHT - (now() % WORLD_HEIGHT);
-}
 fn print_current_time() -> usize {
     let mut rng = get_random_buf();
     let value2 = rng.unwrap()[0];
@@ -51,10 +46,9 @@ fn get_random_buf() -> Result<[u8; 1], getrandom::Error> {
 impl Pipe {
     fn new() -> Pipe {
         Pipe {
-            x: WORLD_WIDTH,
             width: 100,
             top: print_current_time() / 3,
-            bottom: get_random_number_in_range(WORLD_HEIGHT) / 3,
+            bottom: print_current_time() / 3,
             pipe_spawn_rate: WORLD_WIDTH,
         }
     }
@@ -78,6 +72,7 @@ pub struct Game {
     bird: Bird,
     pipe: Pipe,
     pipe2: Pipe,
+    game_over: bool,
 }
 
 #[wasm_bindgen]
@@ -89,6 +84,7 @@ impl Game {
             bird: Bird::new(),
             pipe: Pipe::new(),
             pipe2: Pipe::new(),
+            game_over: false,
         }
     }
 
@@ -123,17 +119,21 @@ impl Game {
         return self.pipe.pipe_spawn_rate;
     }
     pub fn update_spawn_rate(&mut self) {
-        self.pipe.pipe_spawn_rate = self.pipe.pipe_spawn_rate - 1;
-        if self.pipe.pipe_spawn_rate <= 0 {
-            self.pipe.pipe_spawn_rate = WORLD_WIDTH;
-            self.pipe = Pipe::new();
-            self.pipe2 = Pipe::new();
+        if self.game_over {
+            self.pipe.pipe_spawn_rate = 0;
+            return;
+        } else {
+            self.pipe.pipe_spawn_rate = self.pipe.pipe_spawn_rate - 1;
+            if self.pipe.pipe_spawn_rate <= 0 {
+                self.pipe.pipe_spawn_rate = WORLD_WIDTH;
+                self.pipe = Pipe::new();
+                self.pipe2 = Pipe::new();
+            }
         }
     }
     pub fn get_random_number(&mut self) -> usize {
-        let pipeGenerator = now() % WORLD_WIDTH;
-
-        return pipeGenerator;
+        let pipe_generator = now() % WORLD_WIDTH;
+        return pipe_generator;
     }
 
     pub fn get_pipe_top(&mut self) -> usize {
@@ -158,17 +158,19 @@ impl Game {
     pub fn detect_collsion(&mut self) -> bool {
         if self.bird_x() as usize > (self.get_current_counter() - self.get_pipe_width()) {
             if self.bird_y() < self.get_pipe_top() as f32 {
-                return true;
+                self.game_over = true;
             }
             if self.bird_y() > (WORLD_HEIGHT - self.get_pipe2_bottom()) as f32 {
-                return true;
+                self.game_over = true;
             }
             return false;
         }
-
         return false;
     }
     pub fn get_current_time(&mut self) -> usize {
         return now();
+    }
+    pub fn get_game_state(&mut self) -> bool {
+        return self.game_over;
     }
 }
