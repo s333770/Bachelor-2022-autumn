@@ -73,6 +73,7 @@ pub struct Game {
     pipe: Pipe,
     pipe2: Pipe,
     game_over: bool,
+    game_counter: i32,
 }
 
 #[wasm_bindgen]
@@ -85,9 +86,9 @@ impl Game {
             pipe: Pipe::new(),
             pipe2: Pipe::new(),
             game_over: false,
+            game_counter: 0,
         }
     }
-
     pub fn width(&self) -> i32 {
         self.width
     }
@@ -106,6 +107,26 @@ impl Game {
     pub fn bird_size(&self) -> i32 {
         self.bird.size
     }
+
+    pub fn get_pipe_top(&mut self) -> usize {
+        return self.pipe.top;
+    }
+    pub fn get_pipe_bottom(&mut self) -> usize {
+        return self.pipe.bottom;
+    }
+    pub fn get_pipe_width(&mut self) -> usize {
+        return self.pipe.width;
+    }
+    pub fn get_pipe2_top(&mut self) -> usize {
+        return self.pipe2.top;
+    }
+    pub fn get_pipe2_width(&mut self) -> usize {
+        return self.pipe2.top;
+    }
+    pub fn get_pipe2_bottom(&mut self) -> usize {
+        return self.pipe2.bottom;
+    }
+
     pub fn fly_upwards(&mut self) {
         self.bird.y = self.bird.y - 30.0;
     }
@@ -132,25 +153,6 @@ impl Game {
     pub fn get_random_number(&mut self) -> usize {
         let pipe_generator = now() % WORLD_WIDTH;
         return pipe_generator;
-    }
-
-    pub fn get_pipe_top(&mut self) -> usize {
-        return self.pipe.top;
-    }
-    pub fn get_pipe_bottom(&mut self) -> usize {
-        return self.pipe.bottom;
-    }
-    pub fn get_pipe_width(&mut self) -> usize {
-        return self.pipe.width;
-    }
-    pub fn get_pipe2_top(&mut self) -> usize {
-        return self.pipe2.top;
-    }
-    pub fn get_pipe2_width(&mut self) -> usize {
-        return self.pipe2.top;
-    }
-    pub fn get_pipe2_bottom(&mut self) -> usize {
-        return self.pipe2.bottom;
     }
 
     pub fn detect_collsion(&mut self) -> bool {
