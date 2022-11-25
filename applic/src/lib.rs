@@ -119,16 +119,14 @@ impl Game {
         return self.pipe.pipe_spawn_rate;
     }
     pub fn update_spawn_rate(&mut self) {
-        if self.game_over {
+        if (self.game_over) {
             self.pipe.pipe_spawn_rate = 0;
-            return;
-        } else {
-            self.pipe.pipe_spawn_rate = self.pipe.pipe_spawn_rate - 1;
-            if self.pipe.pipe_spawn_rate <= 0 {
-                self.pipe.pipe_spawn_rate = WORLD_WIDTH;
-                self.pipe = Pipe::new();
-                self.pipe2 = Pipe::new();
-            }
+        }
+        self.pipe.pipe_spawn_rate = self.pipe.pipe_spawn_rate - 1;
+        if self.pipe.pipe_spawn_rate <= 0 {
+            self.pipe.pipe_spawn_rate = WORLD_WIDTH;
+            self.pipe = Pipe::new();
+            self.pipe2 = Pipe::new();
         }
     }
     pub fn get_random_number(&mut self) -> usize {
@@ -172,5 +170,9 @@ impl Game {
     }
     pub fn get_game_state(&mut self) -> bool {
         return self.game_over;
+    }
+    pub fn reset_game_state(&mut self) {
+        self.game_over = false;
+        self.pipe.pipe_spawn_rate = WORLD_WIDTH;
     }
 }
