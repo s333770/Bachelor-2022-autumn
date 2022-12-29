@@ -11,7 +11,7 @@ function App() {
   return (
     <div className="App">
       <h1>Skolestudio</h1>
-      <Canvas/>
+      {/* <Canvas/> */}
       <br/>
       <CanvasJs/>
     </div>

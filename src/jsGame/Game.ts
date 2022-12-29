@@ -35,8 +35,9 @@ export class PipeJs{
     constructor(){
         this.x=worldWidth;
         this.width=100;
-        this.top=Date.now()%worldHeight;
-        this.bottom=Date.now()%worldHeight;
+        this.top=Math.random()*1000%worldHeight;
+        this.bottom=Math.random()*1000%worldHeight;
         this.pipe_spawn_rate=worldWidth
     }
+   
 }

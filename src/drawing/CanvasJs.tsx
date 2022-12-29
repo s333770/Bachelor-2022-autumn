@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { BirdJs, worldHeight, worldWidth } from "../jsGame/Game";
+import { BirdJs, worldHeight, worldWidth, PipeJs } from "../jsGame/Game";
 
 
 const CanvasJs: React.FC= () => {
@@ -16,6 +16,7 @@ const CanvasJs: React.FC= () => {
         return;
       }
       const bird=new BirdJs();
+    var pipe=new PipeJs();
       document.addEventListener("keydown",(e)=>{
         switch(e.code){
             case "ArrowUp": 
@@ -35,6 +36,17 @@ const CanvasJs: React.FC= () => {
           context.arc(bird.x,bird.y,bird.size,0,2*Math.PI);
           context.fill();
           bird.update();
+          i++;
+          context.fillRect(pipe.pipe_spawn_rate-i, 0,pipe.width,pipe.top/3);
+          context.fillRect(pipe.pipe_spawn_rate-i, worldHeight ,pipe.width ,-pipe.bottom/2);   
+          if(i>=worldWidth){
+            pipe=new PipeJs();
+            i=0;
+
+          }
+          console.log(pipe)
+       
+          
           requestId=requestAnimationFrame(render);
           return () => {
             cancelAnimationFrame(requestId);
