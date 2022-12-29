@@ -1,11 +1,13 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BirdJs, worldHeight, worldWidth, PipeJs } from "../jsGame/Game";
 
 
 const CanvasJs: React.FC= () => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     let requestId:any,
-    i = 0;
+    i = 0,
+    gameOver=false;
+    // const [gameOver, setGameOver]=useState(false);
     useEffect(() => {
       const canvas = canvasRef.current;
       if (!canvas) {
@@ -25,7 +27,18 @@ const CanvasJs: React.FC= () => {
             case "Space": 
         bird.flyUpwards();
                  break;
+            case "Enter":
+              gameOver=false;
         }});
+
+        const detectCollision=(bird: BirdJs, pipe: PipeJs, xPosition: number)=>{
+          if(bird.y+bird.size<=pipe.top/3 && xPosition<worldWidth/2+bird.size &&  xPosition>worldWidth/2-bird.size ){
+            gameOver=true;
+          }
+          if(bird.y-bird.size >= worldHeight-pipe.bottom/2 && xPosition<worldWidth/2+bird.size &&  xPosition>worldWidth/2-bird.size){ 
+           gameOver=true;
+          }
+        }
        
       const render = () => {
         context.beginPath();
@@ -39,12 +52,17 @@ const CanvasJs: React.FC= () => {
           i++;
           context.fillRect(pipe.pipe_spawn_rate-i, 0,pipe.width,pipe.top/3);
           context.fillRect(pipe.pipe_spawn_rate-i, worldHeight ,pipe.width ,-pipe.bottom/2);   
-          if(i>=worldWidth){
+          detectCollision(bird,pipe,i);
+          if(gameOver==true){
+            context.font="30px Arial";
+            context.fillText("Game over, press enter to restart", 10, 50);
+          }
+
+          if(i>=worldWidth && gameOver!==true){
             pipe=new PipeJs();
             i=0;
-
           }
-          console.log(pipe)
+          
        
           
           requestId=requestAnimationFrame(render);
@@ -54,8 +72,13 @@ const CanvasJs: React.FC= () => {
       }; 
       render();
     }, []);
+
     return <canvas ref={canvasRef}  width={worldWidth} height={worldHeight}/>;
   };
+ 
+
+
+ 
   
   export default CanvasJs;
   

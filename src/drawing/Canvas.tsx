@@ -56,11 +56,10 @@ const Canvas: React.FC= () => {
         context.fillRect(game.get_current_counter(),0,game.get_pipe_width(),game.get_pipe_top());  
         context.fillRect(game.get_current_counter(),canvas.height, game.get_pipe_width(),-game.get_pipe2_bottom())
         game.update_spawn_rate();
-        console.log(game.get_game_state());
         game.detect_collsion();
         if(game.get_game_state()==true){
           context.font="30px Arial";
-          context.fillText("Game over, press enter up to restart", 10, 50);
+          context.fillText("Game over, press enter to restart", 10, 50);
         }
         requestId=requestAnimationFrame(render);
         return () => {

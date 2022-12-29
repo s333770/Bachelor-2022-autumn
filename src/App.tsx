@@ -10,10 +10,14 @@ function App() {
  
   return (
     <div className="App">
+      <div className="container" style={{display: "flex", flexDirection:"column"}}>
       <h1>Skolestudio</h1>
-      {/* <Canvas/> */}
+      WebAssembly
+      <Canvas/>
       <br/>
+      Javascript
       <CanvasJs/>
+      </div>
     </div>
   );
 }

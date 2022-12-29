@@ -1,5 +1,3 @@
-import { Bird } from "../../applic/pkg/applic";
-
 export const worldWidth=600;
 export const worldHeight=400;
 
@@ -15,13 +13,13 @@ export class BirdJs{
         this.velocity= -1
     }
     update(){
-        this.y=this.y+0.5;
+        this.y=this.y+1;
         if(this.y>worldHeight){
             this.y=worldHeight;
         }
     }
     flyUpwards(){
-        this.y=this.y-30;
+        this.y=this.y-40;
        
     }
 }
