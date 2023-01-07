@@ -7,7 +7,6 @@ const CanvasJs: React.FC= () => {
     let requestId:any,
     i = 0,
     gameOver=false;
-    // const [gameOver, setGameOver]=useState(false);
     useEffect(() => {
       const canvas = canvasRef.current;
       if (!canvas) {
@@ -39,6 +38,7 @@ const CanvasJs: React.FC= () => {
            gameOver=true;
           }
         }
+        console.log(generateFibonacciNumbers(40))
        
       const render = () => {
         context.beginPath();
@@ -75,6 +75,14 @@ const CanvasJs: React.FC= () => {
 
     return <canvas ref={canvasRef}  width={worldWidth} height={worldHeight}/>;
   };
+
+  const generateFibonacciNumbers: any = (number: number)=>{
+    switch (number) {
+      case 0 : return 1;
+      case 1:return  1;
+      default: return generateFibonacciNumbers(number-1)+generateFibonacciNumbers(number-2);
+  }
+  }
  
 
 

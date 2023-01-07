@@ -11,6 +11,8 @@ const Canvas: React.FC= () => {
     init().then(wasm=>{
 
     const game=Game.new()
+    const fibonacci=Game.generate_fibonacci_numbers(40);
+    console.log(fibonacci)
 
     const canvas = canvasRef.current;
     if (!canvas) {

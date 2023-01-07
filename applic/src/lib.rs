@@ -177,4 +177,14 @@ impl Game {
         self.game_over = false;
         self.pipe.pipe_spawn_rate = WORLD_WIDTH;
     }
+    pub fn generate_fibonacci_numbers(number: u32) -> u32 {
+        match number {
+            0 => 1,
+            1 => 1,
+            _ => {
+                Self::generate_fibonacci_numbers(number - 1)
+                    + Self::generate_fibonacci_numbers(number - 2)
+            }
+        }
+    }
 }

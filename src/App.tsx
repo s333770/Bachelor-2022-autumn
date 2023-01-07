@@ -15,8 +15,8 @@ function App() {
       WebAssembly
       <Canvas/>
       <br/>
-      Javascript
-      <CanvasJs/>
+      {/* Javascript
+      <CanvasJs/> */}
       </div>
     </div>
   );
